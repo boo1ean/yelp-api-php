@@ -1,5 +1,5 @@
 <?php
-require_once ('lib/OAuth.php');
+require_once ('lib/YOAuth.php');
 
 // Check for dependencies
 if (!function_exists('curl_init'))
@@ -42,13 +42,13 @@ class Yelp
     $this->_token_secret    = $options['token_secret'];
 
     // Token object built using the OAuth library
-    $this->_token = new OAuthToken($this->_token, $this->_token_secret);
+    $this->_token = new YOAuthToken($this->_token, $this->_token_secret);
 
     // Consumer object built using the OAuth library
-    $this->_consumer = new OAuthConsumer($this->_consumer_key, $this->_consumer_secret);
+    $this->_consumer = new YOAuthConsumer($this->_consumer_key, $this->_consumer_secret);
 
     // Yelp uses HMAC SHA1 encoding
-    $this->_signature_method = new OAuthSignatureMethod_HMAC_SHA1();
+    $this->_signature_method = new YOAuthSignatureMethod_HMAC_SHA1();
   }
 
   /**
@@ -78,7 +78,7 @@ class Yelp
    * @return string signed url.
    */
   private function _getSignedUrl($url) {
-    $oauthrequest = OAuthRequest::from_consumer_and_token($this->_consumer, $this->_token, 'GET', $url);
+    $oauthrequest = YOAuthRequest::from_consumer_and_token($this->_consumer, $this->_token, 'GET', $url);
 
     // Sign the request
     $oauthrequest->sign_request($this->_signature_method, $this->_consumer, $this->_token);
