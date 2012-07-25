@@ -54,6 +54,7 @@ class Yelp
   /**
    * Get data from yelp.
    *
+   * @throw YelpException if get response error.
    * @param string $name name of business.
    * @return json yelp response data.
    */
@@ -68,7 +69,13 @@ class Yelp
     $data = curl_exec($ch); // Yelp response
     curl_close($ch);
 
-    return json_decode($data);
+    $data = json_decode($data);
+
+    if (isset($data->error)) {
+      throw new YelpException($name . ': ' . $data->error->text .
+        '. ' . $data->error->description . '.');
+    } else
+      return $data;
   }
 
   /**
