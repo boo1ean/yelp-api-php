@@ -72,8 +72,7 @@ class Yelp
     $data = json_decode($data);
 
     if (isset($data->error)) {
-      throw new YelpException($name . ': ' . $data->error->text .
-        '. ' . $data->error->description . '.');
+      throw new YelpException($name . ': ' . $data->error->text);
     } else
       return $data;
   }
